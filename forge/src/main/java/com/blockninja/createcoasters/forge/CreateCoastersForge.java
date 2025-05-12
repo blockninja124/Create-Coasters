@@ -10,7 +10,8 @@ public class CreateCoastersForge {
     public CreateCoastersForge() {
         // registrate must be given the mod event bus on forge before registration
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        ExampleBlocks.REGISTRATE.registerEventListeners(eventBus);
-        ExampleMod.init();
+        CreateCoasters.init();
+
+        CreateCoasters.REGISTRATE.registerEventListeners(eventBus);
     }
 }

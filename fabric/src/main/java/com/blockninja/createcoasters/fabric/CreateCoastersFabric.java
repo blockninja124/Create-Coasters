@@ -12,6 +12,6 @@ public class CreateCoastersFabric implements ModInitializer {
 
 
         // on fabric, Registrates must be explicitly finalized and registered.
-        ExampleBlocks.REGISTRATE.register();
+        CreateCoasters.REGISTRATE.register();
     }
 }
