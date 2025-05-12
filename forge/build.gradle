@@ -46,16 +46,21 @@ dependencies {
 }
 
 processResources {
-    // set up properties for filling into metadata
-    Map<String, Object> properties = [
-            "version": version,
-            "forge_version": forge_version.split("\\.")[0], // only specify major version of forge
-            "minecraft_version": minecraft_version,
-            "create_version": create_forge_version.split("-")[0] // cut off build number
-    ]
-    inputs.properties(properties)
+    def props = new Properties()
+    rootProject.file("gradle.properties").withInputStream { props.load(it) }
+
+    //noinspection GroovyAssignabilityCheck
+    println "test"
+    Map<String, Object> properties = props.clone()
+    properties.computeIfPresent("create_forge_version", (key, obj) -> {return obj.split("-")[0]})
+    properties.computeIfPresent("forge_version", (key, obj) -> {return obj.split("\\.")[0]})
 
     filesMatching("META-INF/mods.toml") {
+        expand properties
+    }
+
+    // We technically only need mod name but whatever
+    filesMatching("pack.mcmeta") {
         expand properties
     }
 }

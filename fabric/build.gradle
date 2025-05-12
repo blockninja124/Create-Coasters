@@ -75,18 +75,11 @@ dependencies {
 }
 
 processResources {
-    // set up properties for filling into metadata
-    Map<String, Object> properties = [
-            "version": version,
-            "fabric_loader_version": fabric_loader_version,
-            "fabric_api_version": fabric_api_version,
-            "minecraft_version": minecraft_version,
-            "create_version": create_fabric_version // on fabric, use the entire version, unlike forge
-    ]
-    inputs.properties(properties)
+    def props = new Properties()
+    rootProject.file("gradle.properties").withInputStream { props.load(it) }
 
     filesMatching("fabric.mod.json") {
-        expand properties
+        expand props
     }
 }
 
