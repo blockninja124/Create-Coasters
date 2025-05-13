@@ -1,0 +1,22 @@
+{
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"texture_size": [18, 52],
+	"textures": {
+		"3": "createcoasters:block/speed_block"
+	},
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 16, 16],
+			"faces": {
+				"north": {"uv": [0.88889, 5.53846, 15.11111, 10.46154], "texture": "#3"},
+				"east": {"uv": [0.88889, 5.53846, 15.11111, 10.46154], "texture": "#3"},
+				"south": {"uv": [0.88889, 5.53846, 15.11111, 10.46154], "texture": "#3"},
+				"west": {"uv": [0.88889, 5.53846, 15.11111, 10.46154], "texture": "#3"},
+				"up": {"uv": [0.88889, 10.76923, 15.11111, 15.69231], "texture": "#3"},
+				"down": {"uv": [0.88889, 0.30769, 15.11111, 5.23077], "texture": "#3"}
+			}
+		}
+	]
+}

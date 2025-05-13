@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "createcoasters:block/speed_block"
+    }
+  }
+}
