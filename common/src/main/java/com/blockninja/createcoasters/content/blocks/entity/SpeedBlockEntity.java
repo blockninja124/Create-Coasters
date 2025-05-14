@@ -53,7 +53,11 @@ public class SpeedBlockEntity extends AbstractTrackBlockEntity<GenericTrackBlock
 
     @Override
     public void onTrain(Train train, Level level, BlockPos blockPos) {
-        train.throttle = ((2 * 10 * 1.0D) - (double) maxSpeed.getValue()) / 2 / 10;
+        if (level.getBestNeighborSignal(blockPos) == 0) {
+
+            train.throttle = ((2 * 10 * 1.0D) - (double) maxSpeed.getValue()) / 2 / 10;
+        }
+
     }
 
     class SetSpeedValueBox extends ValueBoxTransform.Sided {
