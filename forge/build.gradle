@@ -50,7 +50,6 @@ processResources {
     rootProject.file("gradle.properties").withInputStream { props.load(it) }
 
     //noinspection GroovyAssignabilityCheck
-    println "test"
     Map<String, Object> properties = props.clone()
     properties.computeIfPresent("create_forge_version", (key, obj) -> {return obj.split("-")[0]})
     properties.computeIfPresent("forge_version", (key, obj) -> {return obj.split("\\.")[0]})
