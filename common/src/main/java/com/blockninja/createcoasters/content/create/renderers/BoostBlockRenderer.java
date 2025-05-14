@@ -40,7 +40,7 @@ public class BoostBlockRenderer extends SmartBlockEntityRenderer<BoostBlockEntit
         ms.pushPose();
         TransformStack.cast(ms)
                 .translate(targetPosition.subtract(pos));
-        RenderedTrackOverlayType type = RenderedTrackOverlayType.STATION;
+        RenderedTrackOverlayType type = RenderedTrackOverlayType.OBSERVER;
         TrackTargetingBehaviour.render(level, targetPosition, target.getTargetDirection(), target.getTargetBezier(), ms,
                 buffer, light, overlay, type, 1 + be.randomScale);
         ms.popPose();

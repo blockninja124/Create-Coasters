@@ -1,5 +1,6 @@
 package com.blockninja.createcoasters.content.blocks.entity;
 
+import com.blockninja.createcoasters.content.blocks.BoostBlock;
 import com.blockninja.createcoasters.content.blocks.ModBlocks;
 import com.blockninja.createcoasters.content.create.EdgePointTypes;
 import com.blockninja.createcoasters.content.create.GenericTrackBlock;
@@ -16,7 +17,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.Random;
 
 public class BoostBlockEntity extends AbstractTrackBlockEntity<GenericTrackBlock> {
-    protected ScrollValueBehaviour maxSpeed;
+    protected ScrollValueBehaviour setSpeed;
     public float randomScale;
 
     public BoostBlockEntity(BlockPos pos, BlockState state) {
@@ -39,12 +39,12 @@ public class BoostBlockEntity extends AbstractTrackBlockEntity<GenericTrackBlock
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
         super.addBehaviours(behaviours);
-        maxSpeed = new ScrollValueBehaviour(Component.translatable("speedbox.label"),
+        setSpeed = new ScrollValueBehaviour(Component.translatable("boostbox.label"),
                 this, new MotorValueBox());
-        maxSpeed.between(0, 100);
-        maxSpeed.value = 100;
-        maxSpeed.withCallback(i -> this.updateGeneratedRotation());
-        behaviours.add(maxSpeed);
+        setSpeed.between(0, 100);
+        setSpeed.value = 100;
+        setSpeed.withCallback(i -> this.updateGeneratedRotation());
+        behaviours.add(setSpeed);
     }
 
     @Override
@@ -60,13 +60,10 @@ public class BoostBlockEntity extends AbstractTrackBlockEntity<GenericTrackBlock
     public void onTrain(Train train, Level level, BlockPos blockPos) {
         if (level.getBestNeighborSignal(blockPos) == 0) {
 
+            boolean inverted = level.getBlockState(blockPos).getValue(BoostBlock.INVERTED);
+            int mod = inverted ? -1 : 1;
 
-            // Set the speed based on alignment
-            //create:red_signal
-
-
-
-            train.speed = 1 * ((double) maxSpeed.getValue() / 100) * Math.min(train.maxSpeed(), train.throttle);
+            train.speed = mod * (((double) setSpeed.getValue() / 100) * Math.min(train.maxSpeed(), train.throttle));
         }
     }
 
@@ -82,7 +79,7 @@ public class BoostBlockEntity extends AbstractTrackBlockEntity<GenericTrackBlock
 
         @Override
         protected Vec3 getSouthLocation() {
-            return VecHelper.voxelSpace(8, 8, 16);
+            return VecHelper.voxelSpace(8, 8, 14.5);
         }
 
 
