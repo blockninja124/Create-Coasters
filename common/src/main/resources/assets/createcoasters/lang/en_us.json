@@ -1,0 +1,6 @@
+{
+  "block.createcoasters.boost_block": "Booster",
+  "block.createcoasters.speed_block": "Speed Limiter",
+  "speedbox.label": "Limit speed to",
+  "boostbox.label": "Boost speed to"
+}

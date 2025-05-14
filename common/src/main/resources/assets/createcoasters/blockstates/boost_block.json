@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "inverted=true": { "model": "createcoasters:block/boost_block_inv" },
+    "inverted=false":  { "model": "createcoasters:block/boost_block" }
+  }
+}
