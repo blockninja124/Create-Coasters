@@ -33,8 +33,8 @@ public class MixinCarriageContraptionEntity implements ContraptionEntityExtraAcc
 
     @Override
     public void setDoSounds(boolean doSoundsNew) {
-        System.out.println("Set do sounds on:");
-        System.out.println(this);
+        //System.out.println("Set do sounds on:");
+        //System.out.println(this);
         doSounds = doSoundsNew;
     }
 }
