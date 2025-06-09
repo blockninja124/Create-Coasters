@@ -2,5 +2,12 @@
   "block.createcoasters.boost_block": "Booster",
   "block.createcoasters.speed_block": "Speed Limiter",
   "speedbox.label": "Limit speed to",
-  "boostbox.label": "Boost speed to"
+  "boostbox.label": "Boost speed to",
+  "createcoasters.schedule.instruction.lockseatschedule": "Lock seats",
+  "createcoasters.schedule.lock": "Lock",
+  "createcoasters.schedule.unlock": "Unlock",
+  "createcoasters.schedule.mode": "Mode:",
+  "createcoasters.schedule.seat": "%s %s seats",
+  "createcoasters.schedule.all_seats": "%s all seats"
+
 }

@@ -1,10 +1,10 @@
 package com.blockninja.createcoasters;
 
-import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.item.DyeColor;
 
 import java.util.ArrayList;
 
 public interface ContraptionEntityExtraAccess {
-    ArrayList<BlockState> getDisabledBlocks();
-    void setDisabledBlocks(ArrayList<BlockState> newBlocks);
+    ArrayList<DyeColor> getDisabledColors();
+    void setDisabledColors(ArrayList<DyeColor> newBlocks);
 }

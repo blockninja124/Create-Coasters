@@ -1,7 +1,8 @@
-package com.blockninja.createcoasters.mixin.forge;
+package com.blockninja.createcoasters.mixin;
 
 import com.blockninja.createcoasters.ContraptionEntityExtraAccess;
 import com.simibubi.create.content.contraptions.Contraption;
+import com.simibubi.create.content.contraptions.actors.seat.SeatBlock;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -24,7 +25,6 @@ public class EntityMixin {
 
         Entity vehicle = player.getVehicle();
         if (vehicle instanceof CarriageContraptionEntity carriageContraptionEntity) {
-            System.out.println("Carriage");
             if (carriageContraptionEntity instanceof ContraptionEntityExtraAccess) {
                 Contraption contraption = carriageContraptionEntity.getContraption();
                 BlockPos seatPos = contraption.getSeatOf(player.getUUID());
@@ -33,17 +33,14 @@ public class EntityMixin {
                 if (seatPos == null) return;
 
                 BlockState state = contraption.getActorAt(seatPos).getLeft().state();
-                if (((ContraptionEntityExtraAccess) vehicle).getDisabledBlocks().contains(state)) {
-                    System.out.println("Cancelling dismount in stopRiding");
-                    ci.cancel(); // Cancel the dismount
+                if (state.getBlock() instanceof SeatBlock seatBlock) {
+                    if (((ContraptionEntityExtraAccess) vehicle).getDisabledColors().contains(seatBlock.getColor())) {
+                        ci.cancel(); // Cancel the dismount
+                    }
                 }
-                System.out.println("Disabled blocks:");
-                System.out.println(((ContraptionEntityExtraAccess) vehicle).getDisabledBlocks());
+
             }
         }
-        /*if (vehicle != null && vehicle.getClass().getName().contains("CarriageContraptionEntity")) {
-
-        }*/
     }
 }
 

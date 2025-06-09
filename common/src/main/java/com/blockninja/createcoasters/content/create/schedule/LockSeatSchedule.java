@@ -3,20 +3,15 @@ package com.blockninja.createcoasters.content.create.schedule;
 import com.blockninja.createcoasters.ContraptionEntityExtraAccess;
 import com.blockninja.createcoasters.CreateCoasters;
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.AllItems;
+import com.simibubi.create.Create;
 import com.simibubi.create.content.contraptions.actors.seat.SeatBlock;
-import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
-import com.simibubi.create.content.trains.entity.CarriageSyncData;
 import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.graph.DiscoveredPath;
 import com.simibubi.create.content.trains.schedule.Schedule;
-import com.simibubi.create.content.trains.schedule.ScheduleItem;
 import com.simibubi.create.content.trains.schedule.destination.ScheduleInstruction;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
-import com.simibubi.create.foundation.utility.Components;
 import com.simibubi.create.foundation.utility.Pair;
 import com.tterrag.registrate.util.entry.BlockEntry;
-import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.nbt.CompoundTag;
@@ -26,16 +21,16 @@ import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class LockSeatSchedule extends ScheduleInstruction implements IScheduleInstruction {
 
     private DyeColor seatColor = DyeColor.WHITE;
-    private final List<Component> lockOptions = List.of(Component.literal("Lock"), Component.literal("Unlock"));
+    private final List<Component> lockOptions = List.of(Component.translatable(CreateCoasters.MOD_ID+".schedule.lock"), Component.translatable(CreateCoasters.MOD_ID+".schedule.unlock"));
 
     public LockSeatSchedule() {
         // Create a test schedule with basic instructions
@@ -52,9 +47,23 @@ public class LockSeatSchedule extends ScheduleInstruction implements IScheduleIn
     @Override
     public Pair<ItemStack, Component> getSummary() {
         if (seatColor != null) {
-            return Pair.of(new ItemStack(AllBlocks.SEATS.get(seatColor).asItem()), Component.literal("Lock "+seatColor.getName()));
+            return Pair.of(
+                    new ItemStack(AllBlocks.SEATS.get(seatColor).asItem()),
+                    // "%mode %color seats" = "Lock White seats"
+                    Component.translatable(
+                            CreateCoasters.MOD_ID+".schedule.seat",
+                            lockOptions.get(intData("Mode")).getString(),
+                            seatColor.getName()
+                    )
+            );
         }
-        return Pair.of(new ItemStack(Items.AIR.asItem()), Component.literal("Unlock all"));
+        return Pair.of(
+                new ItemStack(Items.AIR.asItem()),
+                Component.translatable(
+                        CreateCoasters.MOD_ID+".schedule.all_seats",
+                        lockOptions.get(intData("Mode")).getString()
+                )
+        );
     }
 
     @Override
@@ -69,7 +78,7 @@ public class LockSeatSchedule extends ScheduleInstruction implements IScheduleIn
 
         builder.addSelectionScrollInput(20, 101,
                 (i, l) -> i.forOptions(lockOptions)
-                        .titled(Component.literal("Mode")),
+                        .titled(Component.translatable(CreateCoasters.MOD_ID+".schedule.mode")),
                 "Mode");
     }
 
@@ -103,44 +112,44 @@ public class LockSeatSchedule extends ScheduleInstruction implements IScheduleIn
 
     @Override
     public DiscoveredPath onCalled(Train train, Schedule schedule, String currentTitle, int currentEntry) {
-        System.out.println("Scroll data:");
-        System.out.println(intData("Mode"));
         // This is such bad code ohhhh my goodness
         train.carriages.forEach((carriage) -> {
             carriage.forEachPresentEntity((entity) -> {
 
-                // TODO: remove this redundant for loop
-                entity.getContraption().getSeats().forEach((blockPos) -> {
+                ArrayList<DyeColor> list = ((ContraptionEntityExtraAccess) entity).getDisabledColors();
 
-                    System.out.println(seatColor);
-
-                    BlockState state = entity.getContraption().getActorAt(blockPos).getLeft().state();
-
-                    ArrayList<BlockState> list = ((ContraptionEntityExtraAccess) entity).getDisabledBlocks();
-
-                    if (seatColor == null) {
-                        list = new ArrayList<>();
-                    } else {
-                        if (state.getBlock() instanceof SeatBlock seatBlock) {
-                            if (seatBlock.getColor() == seatColor) {
-                                if (!list.contains(state)) {
-                                    list.add(state);
-                                }
+                // If no seat color is specified, do them all
+                if (seatColor == null) {
+                    // Lock all
+                    if (intData("Mode") == 0) {
+                        for (BlockEntry<SeatBlock> seatBlockBlockEntry : AllBlocks.SEATS) {
+                            Block block = seatBlockBlockEntry.getDefaultState().getBlock();
+                            // Probably redundant
+                            if (block instanceof SeatBlock seatBlock) {
+                                list.add(seatBlock.getColor());
                             }
                         }
+
+                    // Unlock all
+                    } else {
+                        list = new ArrayList<>();
+                    }
+                } else {
+                    // Lock seat
+                    if (intData("Mode") == 0) {
+                        if (!list.contains(seatColor)) {
+                            list.add(seatColor);
+                        }
+                    // Other option is "1" and should unlock seat
+                    } else {
+                        list.remove(seatColor);
                     }
 
-                    ((ContraptionEntityExtraAccess) entity).setDisabledBlocks(list);
-                });
+                }
 
-                entity.getSelfAndPassengers().forEach((seatedEntity) -> {
-
-                    System.out.println(seatedEntity);
-                });
+                ((ContraptionEntityExtraAccess) entity).setDisabledColors(list);
             });
         });
-        System.out.println("Foo on train: ");
-        System.out.println(train);
         return null;
     }
 
