@@ -7,4 +7,6 @@ import java.util.ArrayList;
 public interface ContraptionEntityExtraAccess {
     ArrayList<DyeColor> getDisabledColors();
     void setDisabledColors(ArrayList<DyeColor> newBlocks);
+    boolean getDoSounds();
+    void setDoSounds(boolean doSounds);
 }

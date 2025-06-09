@@ -8,6 +8,10 @@
   "createcoasters.schedule.unlock": "Unlock",
   "createcoasters.schedule.mode": "Mode:",
   "createcoasters.schedule.seat": "%s %s seats",
-  "createcoasters.schedule.all_seats": "%s all seats"
-
+  "createcoasters.schedule.all_seats": "%s all seats",
+  "createcoasters.schedule.instruction.dosoundsschedule": "Set steam sounds",
+  "createcoasters.schedule.sound_mode": "Steam sounds",
+  "createcoasters.schedule.sound_on": "Enable",
+  "createcoasters.schedule.sound_off": "Disable",
+  "createcoasters.schedule.do_sounds": "%s steam sounds"
 }

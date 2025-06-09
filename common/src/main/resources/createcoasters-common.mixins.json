@@ -6,9 +6,10 @@
   "client": [
   ],
   "mixins": [
+    "EntityMixin",
     "MixinCarriageContraptionEntity",
-    "MixinScheduleRuntime",
-    "EntityMixin"
+    "MixinCarriageSounds",
+    "MixinScheduleRuntime"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -2,7 +2,6 @@ package com.blockninja.createcoasters.mixin;
 
 
 import com.blockninja.createcoasters.content.create.schedule.IScheduleInstruction;
-import com.blockninja.createcoasters.content.create.schedule.LockSeatSchedule;
 import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.graph.DiscoveredPath;
 import com.simibubi.create.content.trains.schedule.Schedule;

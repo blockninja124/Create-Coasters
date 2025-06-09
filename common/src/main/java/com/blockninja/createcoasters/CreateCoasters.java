@@ -1,5 +1,7 @@
 package com.blockninja.createcoasters;
 
+import com.blockninja.createcoasters.content.create.schedule.DoSoundsSchedule;
+import com.blockninja.createcoasters.network.NetworkHandler;
 import com.simibubi.create.Create;
 import com.simibubi.create.content.trains.schedule.Schedule;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -24,6 +26,13 @@ public class CreateCoasters {
                 new ResourceLocation(MOD_ID, "lockseatschedule"),
                 LockSeatSchedule::new
         ));
+
+        Schedule.INSTRUCTION_TYPES.add(Pair.of(
+                new ResourceLocation(MOD_ID, "dosoundsschedule"),
+                DoSoundsSchedule::new
+        ));
+
+        NetworkHandler.registerPackets();
 
         ModBlocks.register(); // hold registrate in a separate class to avoid loading early on forge
     }
