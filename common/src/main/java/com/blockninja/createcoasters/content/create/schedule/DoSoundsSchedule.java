@@ -1,31 +1,23 @@
 package com.blockninja.createcoasters.content.create.schedule;
 
-import com.blockninja.createcoasters.ContraptionEntityExtraAccess;
+import com.blockninja.createcoasters.mixin_interfaces.CarriageEntityExtraAccess;
+import com.blockninja.createcoasters.mixin_interfaces.ContraptionEntityExtraAccess;
 import com.blockninja.createcoasters.CreateCoasters;
 import com.blockninja.createcoasters.network.NetworkHandler;
 import com.blockninja.createcoasters.network.packets.SyncDoSoundsPacket;
-import com.mojang.brigadier.arguments.StringArgumentType;
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.contraptions.actors.seat.SeatBlock;
 import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.graph.DiscoveredPath;
 import com.simibubi.create.content.trains.schedule.Schedule;
 import com.simibubi.create.content.trains.schedule.destination.ScheduleInstruction;
 import com.simibubi.create.foundation.gui.ModularGuiLineBuilder;
 import com.simibubi.create.foundation.utility.Pair;
-import com.tterrag.registrate.util.entry.BlockEntry;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.DyeColor;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Block;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class DoSoundsSchedule extends ScheduleInstruction implements IScheduleInstruction {
@@ -99,7 +91,7 @@ public class DoSoundsSchedule extends ScheduleInstruction implements IScheduleIn
         train.carriages.forEach((carriage) -> {
             carriage.forEachPresentEntity((entity) -> {
 
-                boolean oldDoSounds = ((ContraptionEntityExtraAccess) entity).getDoSounds();
+                boolean oldDoSounds = ((CarriageEntityExtraAccess) entity).getDoSounds();
 
                 boolean doSounds = true;
 
@@ -110,7 +102,7 @@ public class DoSoundsSchedule extends ScheduleInstruction implements IScheduleIn
 
                 if (oldDoSounds != doSounds) {
                     NetworkHandler.sendRCPacketToTracking(new SyncDoSoundsPacket(entity.getId(), doSounds), entity);
-                    ((ContraptionEntityExtraAccess) entity).setDoSounds(doSounds);
+                    ((CarriageEntityExtraAccess) entity).setDoSounds(doSounds);
                 }
 
 

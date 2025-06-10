@@ -1,6 +1,7 @@
 package com.blockninja.createcoasters.mixin;
 
-import com.blockninja.createcoasters.ContraptionEntityExtraAccess;
+import com.blockninja.createcoasters.mixin_interfaces.ContraptionEntityExtraAccess;
+import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.Contraption;
 import com.simibubi.create.content.contraptions.actors.seat.SeatBlock;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
@@ -19,28 +20,28 @@ public class EntityMixin {
     @Inject(method = "stopRiding", at = @At("HEAD"), cancellable = true)
     private void onStopRiding(CallbackInfo ci) {
         Entity self = (Entity) (Object) this;
+        if (self.getRemovalReason() != null) return;
 
         // Only apply to players
         if (!(self instanceof Player player)) return;
 
         Entity vehicle = player.getVehicle();
-        if (vehicle instanceof CarriageContraptionEntity carriageContraptionEntity) {
-            if (carriageContraptionEntity instanceof ContraptionEntityExtraAccess) {
-                Contraption contraption = carriageContraptionEntity.getContraption();
-                BlockPos seatPos = contraption.getSeatOf(player.getUUID());
+        if (vehicle instanceof AbstractContraptionEntity abstractContraptionEntity) {
+            Contraption contraption = abstractContraptionEntity.getContraption();
+            BlockPos seatPos = contraption.getSeatOf(player.getUUID());
 
-                // LocalPlayer's will be null
-                if (seatPos == null) return;
+            // LocalPlayer's will be null
+            if (seatPos == null) return;
 
-                BlockState state = contraption.getActorAt(seatPos).getLeft().state();
-                if (state.getBlock() instanceof SeatBlock seatBlock) {
-                    if (((ContraptionEntityExtraAccess) vehicle).getDisabledColors().contains(seatBlock.getColor())) {
-                        ci.cancel(); // Cancel the dismount
-                    }
+            BlockState state = contraption.getActorAt(seatPos).getLeft().state();
+            if (state.getBlock() instanceof SeatBlock seatBlock) {
+                if (((ContraptionEntityExtraAccess) vehicle).getDisabledColors().contains(seatBlock.getColor())) {
+                    ci.cancel(); // Cancel the dismount
                 }
-
             }
         }
     }
+
+
 }
 

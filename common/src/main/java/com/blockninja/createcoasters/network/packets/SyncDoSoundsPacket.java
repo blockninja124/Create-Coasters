@@ -1,6 +1,7 @@
 package com.blockninja.createcoasters.network.packets;
 
-import com.blockninja.createcoasters.ContraptionEntityExtraAccess;
+import com.blockninja.createcoasters.mixin_interfaces.CarriageEntityExtraAccess;
+import com.blockninja.createcoasters.mixin_interfaces.ContraptionEntityExtraAccess;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
@@ -30,7 +31,7 @@ public class SyncDoSoundsPacket extends RCPacket {
     public void handleClient() {
         Entity entity = Minecraft.getInstance().level.getEntity(entityId);
         if (entity instanceof CarriageContraptionEntity carriageContraptionEntity) {
-            ((ContraptionEntityExtraAccess) carriageContraptionEntity).setDoSounds(doSounds);
+            ((CarriageEntityExtraAccess) carriageContraptionEntity).setDoSounds(doSounds);
         }
     }
 }

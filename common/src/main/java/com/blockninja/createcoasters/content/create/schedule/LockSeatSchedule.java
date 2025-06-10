@@ -1,9 +1,8 @@
 package com.blockninja.createcoasters.content.create.schedule;
 
-import com.blockninja.createcoasters.ContraptionEntityExtraAccess;
+import com.blockninja.createcoasters.mixin_interfaces.ContraptionEntityExtraAccess;
 import com.blockninja.createcoasters.CreateCoasters;
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.Create;
 import com.simibubi.create.content.contraptions.actors.seat.SeatBlock;
 import com.simibubi.create.content.trains.entity.Train;
 import com.simibubi.create.content.trains.graph.DiscoveredPath;
@@ -22,7 +21,6 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -80,6 +78,8 @@ public class LockSeatSchedule extends ScheduleInstruction implements IScheduleIn
                 (i, l) -> i.forOptions(lockOptions)
                         .titled(Component.translatable(CreateCoasters.MOD_ID+".schedule.mode")),
                 "Mode");
+
+
     }
 
 
