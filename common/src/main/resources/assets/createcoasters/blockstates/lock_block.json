@@ -1,0 +1,6 @@
+{
+  "variants": {
+    "powered=true": { "model": "createcoasters:block/lock_block_powered" },
+    "powered=false":  { "model": "createcoasters:block/lock_block" }
+  }
+}
