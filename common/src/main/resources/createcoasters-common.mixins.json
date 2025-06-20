@@ -4,6 +4,7 @@
   "package": "com.blockninja.createcoasters.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "MixinAbstractClientPlayer"
   ],
   "mixins": [
     "EntityMixin",
