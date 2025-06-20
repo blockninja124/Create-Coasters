@@ -55,7 +55,7 @@ public class LockBlock extends Block implements IBE<LockBlockEntity> {
 
     @Override
     public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-        return new LockBlockEntity(pos, state);
+        return new LockBlockEntity(pos, state, 0, 4, 0);
     }
 
     @Override

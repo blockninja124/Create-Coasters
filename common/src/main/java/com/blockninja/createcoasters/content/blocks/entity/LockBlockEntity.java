@@ -2,17 +2,18 @@ package com.blockninja.createcoasters.content.blocks.entity;
 
 import com.blockninja.createcoasters.content.blocks.ModBlocks;
 import com.blockninja.createcoasters.mixin_interfaces.ContraptionEntityExtraAccess;
-import com.jozufozu.flywheel.fabric.mixin.DebugScreenOverlayMixin;
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.CreateClient;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.contraptions.actors.seat.SeatBlock;
-import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
-import com.simibubi.create.content.trains.entity.Train;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.debug.DebugRenderer;
-import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.DyeColor;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -20,19 +21,33 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.lwjgl.glfw.GLFW;
+import com.jozufozu.flywheel.util.transform.TransformStack;
+import com.mojang.blaze3d.vertex.PoseStack;
+import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
+import com.simibubi.create.foundation.utility.AngleHelper;
+import com.simibubi.create.foundation.utility.VecHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LockBlockEntity extends BlockEntity {
+public class LockBlockEntity extends SmartBlockEntity {
+    public final double dx;
+    public final double dy;
+    public final double dz;
 
-    public LockBlockEntity(BlockPos pos, BlockState state) {
+    protected ScrollValueBehaviour horizontalDistance;
+
+    public LockBlockEntity(BlockPos pos, BlockState state, double dx, double dy, double dz) {
         super(ModBlocks.LOCK_BLOCK_ENTITY.get(), pos, state);
+        this.dx = dx;
+        this.dy = dy;
+        this.dz = dz;
     }
 
     public static <T extends BlockEntity> void clientTick(Level level, BlockPos blockPos, BlockState state, T t) {
-
+        if (Minecraft.getInstance().getEntityRenderDispatcher().shouldRenderHitBoxes()) {
+            CreateClient.OUTLINER.showAABB(t, getSearchBox(blockPos, (LockBlockEntity) t), 1);
+        }
     }
 
     public static <T extends BlockEntity> void serverTick(Level level, BlockPos blockPos, BlockState blockState, T be) {
@@ -52,7 +67,7 @@ public class LockBlockEntity extends BlockEntity {
 
             int redstone = level.getBestNeighborSignal(blockPos);
 
-            AABB searchBox = new AABB(blockPos.getCenter(), blockPos.getCenter().add(new Vec3(0, 4, 0)));
+            AABB searchBox = getSearchBox(blockPos, abe);
             List<AbstractContraptionEntity> entities = level.getEntitiesOfClass(AbstractContraptionEntity.class, searchBox);
 
             for (AbstractContraptionEntity entity : entities) {
@@ -85,37 +100,27 @@ public class LockBlockEntity extends BlockEntity {
         }
     }
 
-    /*@Override
+    public static AABB getSearchBox(BlockPos blockPos, LockBlockEntity abe) {
+        return new AABB(blockPos.getCenter().subtract(0.5, 0.5, 0.5).subtract(abe.horizontalDistance.getValue(), 0, abe.horizontalDistance.getValue()), blockPos.getCenter().add(0.5, 0.5, 0.5).add(new Vec3(abe.horizontalDistance.getValue(), abe.dy, abe.horizontalDistance.getValue())));
+    }
+
+    @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
-        super.addBehaviours(behaviours);
 
-        maxSpeed = new ScrollValueBehaviour(Component.translatable("speedbox.label"),
-                this, new SetSpeedValueBox());
-        maxSpeed.between(0, 19);
-        maxSpeed.value = 1;
-        maxSpeed.withCallback(i -> this.updateGeneratedRotation());
-        behaviours.add(maxSpeed);
+        // Why wont these be UNIQUE RAHH
+        horizontalDistance = new ScrollValueBehaviour(Component.translatable("lockblock.label"),
+                this, new SetSpeedValueBox(Direction.Axis.Y));
+        horizontalDistance.between(0, 5);
+        horizontalDistance.value = 0;
+        behaviours.add(horizontalDistance);
     }
 
-    @Override
-    public EdgePointType<GenericTrackBlock> getEdgePointType() {
-        return EdgePointTypes.SPEED_BLOCK;
-    }
+    private class SetSpeedValueBox extends ValueBoxTransform.Sided {
+        Direction.Axis inactive;
 
-    private void updateGeneratedRotation() {
-
-    }
-
-    @Override
-    public void onTrain(Train train, Level level, BlockPos blockPos) {
-        if (level.getBestNeighborSignal(blockPos) == 0) {
-
-            train.throttle = ((2 * 10 * 1.0D) - (double) maxSpeed.getValue()) / 2 / 10;
+        public SetSpeedValueBox(Direction.Axis inactive) {
+            this.inactive = inactive;
         }
-
-    }
-
-    class SetSpeedValueBox extends ValueBoxTransform.Sided {
 
         @Override
         protected Vec3 getSouthLocation() {
@@ -140,9 +145,8 @@ public class LockBlockEntity extends BlockEntity {
 
         @Override
         protected boolean isSideActive(BlockState state, Direction direction) {
-            Direction facing = Direction.UP;
-            return direction.getAxis() != facing.getAxis();
+            return direction.getAxis() != inactive;
         }
 
-    }*/
+    }
 }
