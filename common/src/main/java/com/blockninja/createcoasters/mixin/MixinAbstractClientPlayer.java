@@ -13,6 +13,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AbstractClientPlayer.class)
 public class MixinAbstractClientPlayer {
+    @Unique
+    public float lastFOV;
+
     @Inject(method = "getFieldOfViewModifier", at = @At("RETURN"), cancellable = true)
     private void getFOVMod(CallbackInfoReturnable<Float> cir) {
         AbstractClientPlayer self = (AbstractClientPlayer) (Object) this;
@@ -46,7 +49,11 @@ public class MixinAbstractClientPlayer {
 
             float budget_speed = (float) Math.sqrt(dx * dx + dy * dy + dz * dz); // per tick
 
-            cir.setReturnValue((float) (currentFOV * (1+(Math.abs(budget_speed/5)))));
+            float newFov = currentFOV * (1+(Math.abs(budget_speed/5)));
+            newFov = (float) Mth.lerp(0.75, this.lastFOV, newFov);
+            cir.setReturnValue(newFov);
+
+            this.lastFOV = newFov;
         }
     }
 }
