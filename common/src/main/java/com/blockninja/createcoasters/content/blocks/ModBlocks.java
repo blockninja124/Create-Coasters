@@ -51,7 +51,7 @@ public class ModBlocks {
 
     public static final BlockEntityEntry<LockBlockEntity> LOCK_BLOCK_ENTITY = REGISTRATE
             .blockEntity("lock_block_entity", (BlockEntityType<LockBlockEntity> type, BlockPos pos, BlockState state) ->
-                    new LockBlockEntity(pos, state, 0, 4, 0)
+                    new LockBlockEntity(pos, state, 4)
             )
             .validBlocks(LOCK_BLOCK)
             .register();
