@@ -3,6 +3,7 @@ package com.blockninja.createcoasters.network.forge;
 import com.blockninja.createcoasters.network.NetworkHandler;
 import com.blockninja.createcoasters.network.packets.RCPacket;
 import com.blockninja.createcoasters.network.packets.SyncDoSoundsPacket;
+import com.blockninja.createcoasters.network.packets.SyncHandsUpTicksPacket;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraftforge.network.NetworkEvent;
@@ -32,14 +33,14 @@ public class NetworkHandlerImpl {
                 NetworkHandlerImpl::handle
         );
 
-        /*INSTANCE.registerMessage(id++,
-                MoveUpPacket.class,
-                MoveUpPacket::encode,
-                MoveUpPacket::decode,
+        INSTANCE.registerMessage(id++,
+                SyncHandsUpTicksPacket.class,
+                SyncHandsUpTicksPacket::encode,
+                SyncHandsUpTicksPacket::decode,
                 NetworkHandlerImpl::handle
         );
 
-        INSTANCE.registerMessage(id++,
+        /*INSTANCE.registerMessage(id++,
                 MoveDownPacket.class,
                 MoveDownPacket::encode,
                 MoveDownPacket::decode,

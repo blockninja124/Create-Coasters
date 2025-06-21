@@ -2,6 +2,7 @@ package com.blockninja.createcoasters.content.blocks;
 
 import com.blockninja.createcoasters.CreateCoasters;
 import com.blockninja.createcoasters.content.blocks.entity.BoostBlockEntity;
+import com.blockninja.createcoasters.content.blocks.entity.HandsUpBlockEntity;
 import com.blockninja.createcoasters.content.blocks.entity.LockBlockEntity;
 import com.blockninja.createcoasters.content.blocks.entity.SpeedBlockEntity;
 import com.blockninja.createcoasters.content.create.EdgePointTypes;
@@ -33,6 +34,10 @@ public class ModBlocks {
             .simpleItem()
             .register();
 
+    public static final BlockEntry<HandsUpBlock> HANDS_UP_BLOCK = REGISTRATE.block("hands_up_block", HandsUpBlock::new)
+            .simpleItem()
+            .register();
+
     public static final BlockEntityEntry<SpeedBlockEntity> SPEED_BLOCK_ENTITY = REGISTRATE
             .blockEntity("speed_block_entity", (BlockEntityType<SpeedBlockEntity> type, BlockPos pos, BlockState state) ->
                     new SpeedBlockEntity(pos, state)
@@ -54,6 +59,13 @@ public class ModBlocks {
                     new LockBlockEntity(pos, state, 4)
             )
             .validBlocks(LOCK_BLOCK)
+            .register();
+
+    public static final BlockEntityEntry<HandsUpBlockEntity> HANDS_UP_BLOCK_ENTITY = REGISTRATE
+            .blockEntity("hands_up_block_entity", (BlockEntityType<HandsUpBlockEntity> type, BlockPos pos, BlockState state) ->
+                    new HandsUpBlockEntity(pos, state, 4)
+            )
+            .validBlocks(HANDS_UP_BLOCK)
             .register();
 
     public static void register() {

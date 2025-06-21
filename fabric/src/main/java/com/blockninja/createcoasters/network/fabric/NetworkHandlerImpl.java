@@ -3,6 +3,7 @@ package com.blockninja.createcoasters.network.fabric;
 import com.blockninja.createcoasters.CreateCoasters;
 import com.blockninja.createcoasters.network.packets.RCPacket;
 import com.blockninja.createcoasters.network.packets.SyncDoSoundsPacket;
+import com.blockninja.createcoasters.network.packets.SyncHandsUpTicksPacket;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
@@ -20,8 +21,8 @@ public class NetworkHandlerImpl {
 
     public static void registerPackets() {
         registerReceivers(SyncDoSoundsPacket.class);
-        /*registerReceivers(DeactivatePacket.class);
-        registerReceivers(LogPacksPacket.class);
+        registerReceivers(SyncHandsUpTicksPacket.class);
+        /*registerReceivers(LogPacksPacket.class);
         registerReceivers(LogToServerPacket.class);
         registerReceivers(MoveDownPacket.class);
         registerReceivers(MoveUpPacket.class);
