@@ -1,5 +1,6 @@
 package com.blockninja.createcoasters.mixin;
 
+import com.blockninja.createcoasters.config.CreateCoastersConfigs;
 import com.simibubi.create.content.contraptions.AbstractContraptionEntity;
 import com.simibubi.create.content.trains.entity.CarriageContraptionEntity;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -18,6 +19,11 @@ public class MixinAbstractClientPlayer {
 
     @Inject(method = "getFieldOfViewModifier", at = @At("RETURN"), cancellable = true)
     private void getFOVMod(CallbackInfoReturnable<Float> cir) {
+
+        if (!CreateCoastersConfigs.client().enableZoom.get()) {
+            return;
+        }
+
         AbstractClientPlayer self = (AbstractClientPlayer) (Object) this;
         float currentFOV = cir.getReturnValue();
         if (self.getVehicle() instanceof CarriageContraptionEntity carriageContraptionEntity) {
@@ -49,8 +55,8 @@ public class MixinAbstractClientPlayer {
 
             float budget_speed = (float) Math.sqrt(dx * dx + dy * dy + dz * dz); // per tick
 
-            float newFov = currentFOV * (1+(Math.abs(budget_speed/5)));
-            newFov = (float) Mth.lerp(0.75, this.lastFOV, newFov);
+            float newFov = currentFOV * (1+(Math.abs(budget_speed/CreateCoastersConfigs.client().zoomMod.get())));
+            newFov = (float) Mth.lerp(CreateCoastersConfigs.client().zoomLerpMod.get(), this.lastFOV, newFov);
             cir.setReturnValue(newFov);
 
             this.lastFOV = newFov;
