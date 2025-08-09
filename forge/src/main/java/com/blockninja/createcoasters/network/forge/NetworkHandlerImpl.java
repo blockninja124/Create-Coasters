@@ -4,7 +4,6 @@ import com.blockninja.createcoasters.network.NetworkHandler;
 import com.blockninja.createcoasters.network.packets.RCPacket;
 import com.blockninja.createcoasters.network.packets.SyncDoSoundsPacket;
 import com.blockninja.createcoasters.network.packets.SyncHandsUpTicksPacket;
-import com.blockninja.createcoasters.network.packets.SyncIconPacket;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
