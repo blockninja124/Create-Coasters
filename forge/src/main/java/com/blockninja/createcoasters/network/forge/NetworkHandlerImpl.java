@@ -43,6 +43,14 @@ public class NetworkHandlerImpl {
                 NetworkHandlerImpl::handle
         );
 
+        INSTANCE.registerMessage(id++,
+                SyncIconPacket.class,
+                SyncIconPacket::encode,
+                SyncIconPacket::decode,
+                NetworkHandlerImpl::handle
+        );
+
+
         /*INSTANCE.registerMessage(id++,
                 MoveDownPacket.class,
                 MoveDownPacket::encode,

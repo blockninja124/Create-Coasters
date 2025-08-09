@@ -1,5 +1,8 @@
 package com.blockninja.createcoasters;
 
+import com.blockninja.createcoasters.content.ModSounds;
+import com.blockninja.createcoasters.content.create.ModTrainIcons;
+import com.blockninja.createcoasters.content.create.schedule.ChangeIconSchedule;
 import com.blockninja.createcoasters.content.create.schedule.DoSoundsSchedule;
 import com.blockninja.createcoasters.network.NetworkHandler;
 import com.simibubi.create.Create;
@@ -32,7 +35,13 @@ public class CreateCoasters {
                 DoSoundsSchedule::new
         ));
 
+        Schedule.INSTRUCTION_TYPES.add(Pair.of(
+                new ResourceLocation(MOD_ID, "changeiconschedule"),
+                ChangeIconSchedule::new
+        ));
+
         NetworkHandler.registerPackets();
+        ModTrainIcons.register();
 
         ModBlocks.register(); // hold registrate in a separate class to avoid loading early on forge
     }

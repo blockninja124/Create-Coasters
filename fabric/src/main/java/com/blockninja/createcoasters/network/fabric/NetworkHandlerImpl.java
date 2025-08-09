@@ -26,6 +26,7 @@ public class NetworkHandlerImpl {
     public static void registerPackets() {
         registerReceivers(SyncDoSoundsPacket.class);
         registerReceivers(SyncHandsUpTicksPacket.class);
+        registerReceivers(SyncIconPacket.class);
         /*registerReceivers(LogPacksPacket.class);
         registerReceivers(LogToServerPacket.class);
         registerReceivers(MoveDownPacket.class);
