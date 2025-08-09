@@ -4,14 +4,18 @@ import com.blockninja.createcoasters.CreateCoasters;
 import com.blockninja.createcoasters.network.packets.RCPacket;
 import com.blockninja.createcoasters.network.packets.SyncDoSoundsPacket;
 import com.blockninja.createcoasters.network.packets.SyncHandsUpTicksPacket;
+import com.blockninja.createcoasters.network.packets.SyncIconPacket;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -54,7 +58,7 @@ public class NetworkHandlerImpl {
                     Object e = m.invoke(null, friendlyByteBuf);
                     if (packetClass.isInstance(e)) {
                         T e1 = (T) e;
-                        e1.handleServer();
+                        e1.handleServer(serverPlayer);
                     }
                 } catch (InvocationTargetException e) {
                     throw new RuntimeException(e);
@@ -86,6 +90,7 @@ public class NetworkHandlerImpl {
     }
 
     public static <T extends RCPacket> void sendRCPacketToTracking(T packet, Entity entity) {
+
         for (ServerPlayer player : PlayerLookup.tracking(entity)) {
             sendRCPacket(player, packet);
         }
@@ -103,6 +108,12 @@ public class NetworkHandlerImpl {
             throw new RuntimeException(e);
         } catch (IllegalAccessException e) {
             throw new RuntimeException("Class "+packet.getClass()+" is being used as a packet, but encode(self, FriendlyByteBuf) method isn't allowed to be used!");
+        }
+    }
+
+    public static <T extends RCPacket> void sendRCPacketToAllInLevel(T packet, ServerLevel level) {
+        for (ServerPlayer player : PlayerLookup.world(level)) {
+            sendRCPacket(player, packet);
         }
     }
 

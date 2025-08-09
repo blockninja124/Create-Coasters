@@ -4,8 +4,11 @@ import com.blockninja.createcoasters.network.NetworkHandler;
 import com.blockninja.createcoasters.network.packets.RCPacket;
 import com.blockninja.createcoasters.network.packets.SyncDoSoundsPacket;
 import com.blockninja.createcoasters.network.packets.SyncHandsUpTicksPacket;
+import com.blockninja.createcoasters.network.packets.SyncIconPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
@@ -84,7 +87,7 @@ public class NetworkHandlerImpl {
                 msg.handleClient();
             } else {
                 // Server
-                msg.handleServer();
+                msg.handleServer(ctx.get().getSender());
             }
         });
 
@@ -102,5 +105,9 @@ public class NetworkHandlerImpl {
 
     public static <T extends RCPacket> void sendRCPacketToServer(T packet) {
         INSTANCE.sendToServer(packet);
+    }
+    
+    public static <T extends RCPacket> void sendRCPacketToAllInLevel(T packet, ServerLevel level) {
+        INSTANCE.send(PacketDistributor.DIMENSION.with(level::dimension), packet);
     }
 }

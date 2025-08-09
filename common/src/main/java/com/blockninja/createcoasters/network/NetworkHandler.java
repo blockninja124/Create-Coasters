@@ -4,6 +4,7 @@ import com.blockninja.createcoasters.CreateCoasters;
 import com.blockninja.createcoasters.network.packets.RCPacket;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 
@@ -30,5 +31,10 @@ public class NetworkHandler {
     public static <T extends RCPacket> void sendRCPacketToServer(T packet) {
         throw new AssertionError("not platformed");
     }
-}
 
+    @ExpectPlatform
+    public static <T extends RCPacket> void sendRCPacketToAllInLevel(T packet, ServerLevel level) {
+        throw new AssertionError("not platformed");
+    }
+
+}
