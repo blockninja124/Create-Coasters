@@ -1,0 +1,40 @@
+{
+  "metal_train": {
+    "sounds": [
+      {
+        "type": "file",
+        "name": "createcoasters:metal_train"
+      }
+    ]
+  },
+  "wooden_train": {
+    "sounds": [
+      {
+        "type": "file",
+        "attenuation_distance": 128,
+        "name": "createcoasters:wooden_train"
+      }
+    ],
+    "subtitle": "create.subtitle.cogs"
+  },
+  "wooden_train_3": {
+    "sounds": [
+      {
+        "type": "file",
+        "attenuation_distance": 128,
+        "name": "createcoasters:wooden_train_3"
+      }
+    ],
+    "subtitle": "create.subtitle.cogs"
+  },
+  "empty": {
+    "sounds": [
+      {
+        "type": "file",
+        "attenuation_distance": 128,
+        "name": "createcoasters:empty"
+      }
+    ],
+    "subtitle": "create.subtitle.cogs"
+  }
+}

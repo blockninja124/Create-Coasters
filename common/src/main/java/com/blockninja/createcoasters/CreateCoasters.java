@@ -44,6 +44,9 @@ public class CreateCoasters {
         ModTrainIcons.register();
 
         ModBlocks.register(); // hold registrate in a separate class to avoid loading early on forge
+
+        ModSounds.register();
+
     }
 
     public static ResourceLocation id(String path) {
