@@ -7,8 +7,8 @@ import com.simibubi.create.foundation.config.ConfigBase;
 public class CClient extends ConfigBase {
 
     public final ConfigBool enableZoom = b(true, "enableZoom", Comments.enableZoom);
-    public final ConfigInt zoomMod = i(8, 1, 20, "zoomMod", Comments.zoomMod);
-    public final ConfigFloat zoomLerpMod = f(0.75F, 0, 1, "zoomLerpMod", Comments.zoomLerpMod);
+    public final ConfigInt zoomMod = i(15, 1, 20, "zoomMod", Comments.zoomMod);
+    public final ConfigFloat zoomLerpMod = f(0.1F, 0, 1, "zoomLerpMod", Comments.zoomLerpMod);
 
     @Override
     public String getName() {
